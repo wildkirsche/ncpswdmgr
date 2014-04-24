@@ -1,4 +1,4 @@
-def encrypt(data, key): #encryption-algorithm, right now simple xor -.- data, key, return :: string
+def encrypt(data, key): #encryption-algorithm, right now uses xor -.- data, key, return :: string
 	i = 0
 	xored = ''
 	for j in data:
