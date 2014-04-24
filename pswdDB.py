@@ -1,4 +1,5 @@
 import crypto
+import pickle
 
 class pswdDB():
 	def __init__(self, mpswd):
@@ -10,3 +11,11 @@ class pswdDB():
 		x.mpswd = self.mpswd
 		x.data = self.x
 		return x
+
+def loadDB(path):
+	x = pswdDB('')
+	x.DB, x.mpswd = pickle.load(open(path, "rb"))
+	return x
+
+def saveDB(path, DB):
+	pickle.dump((DB.DB, DB.mpswd), open(path, "wb"))
