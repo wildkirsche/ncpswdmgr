@@ -1,3 +1,6 @@
+import hashlib #for hash()
+import binascii #for hash()
+
 def encrypt(data, key): #encryption-algorithm, right now uses xor -.- data, key, return :: string
 	i = 0
 	xored = ''
@@ -8,3 +11,9 @@ def encrypt(data, key): #encryption-algorithm, right now uses xor -.- data, key,
 
 def decrypt(data, key): #see above
 	return crypt(data, key)
+
+def hash(data): #ordinary hash function data, return :: string
+	h = hashlib.new("sha512")
+	h.update(data.encode())
+	digest = h.hexdigest().decode('ascii', 'ignore')
+	return binascii.unhexlify(digest)
