@@ -6,14 +6,13 @@ def encrypt(data, key): #encryption-algorithm, right now uses xor -.- data, key,
 	xored = ''
 	for j in data:
 		xored += chr(ord(key[i]) ^ ord(j))
-		i = (i++)%len(key)
+		i = (i+1)%len(key)
 	return xored
 
 def decrypt(data, key): #see above
 	return crypt(data, key)
 
 def hash(data): #ordinary hash function data, return :: string
-	h = hashlib.new("sha512")
-	h.update(data.encode())
-	digest = h.hexdigest().decode('ascii', 'ignore')
-	return binascii.unhexlify(digest)
+	h = hashlib.new('sha512')
+	h.update(data .encode())
+	return binascii.unhexlify(h.hexdigest()).decode('ascii', 'ignore')
