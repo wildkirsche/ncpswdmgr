@@ -9,7 +9,7 @@ class pswdDB():
 	def copy(self):
 		x = pswdDB('')
 		x.mpswd = self.mpswd
-		x.data = self.x
+		x.DB = self.DB
 		return x
 
 def loadDB(path):
