@@ -67,7 +67,49 @@ def newDB(stdscr):
 			stdscr.addstr(0, 0, "Didn't match\tHit any key")
 			stdscr.refresh()
 			stdscr.getch()
+	stdscr.keypad(True)
 
 def oldDB(stdscr):
+	curses.echo()
+	stdscr.keypad(False)
+	
+	stdscr.clear() #get path to DB
+	stdscr.addstr(0, 0, "Enter path to DB:")
+	stdscr.move(1, 0)
+	stdscr.refresh()
+	path = stdscr.getstr(1,0).decode()
+	
+	DB = pswdDB.loadDB(path)
+	
+	curses.noecho()
+	stdscr.keypad(True)
+	
+	selection = 0 #first menu
+	while True:
+		stdscr.clear()
+		if selection == 1:
+			stdscr.addstr(0, 0, "Save password:")
+			stdscr.addstr(1, 0, "Load password:", curses.A_REVERSE)
+		else:
+			stdscr.addstr(0, 0, "Save password:", curses.A_REVERSE)
+			stdscr.addstr(1, 0, "Load password:")
+		c = stdscr.getch()
+		if c == curses.KEY_UP or c == curses.KEY_DOWN:
+			selection += 1
+			selection %= 2
+		elif c == ord('q') or c == curses.KEY_LEFT:
+			break  # Exit the while loop
+		elif c == curses.KEY_RIGHT or c == curses.KEY_ENTER: #enter next menulevel
+			if selection == 0:
+				newDB(stdscr, DB)
+			else:
+				oldDB(stdscr, DB)
+
+def oldPswd(stdscr):
 	pass
+
+
+def newPswd(stdscr):
+	pass
+
 start(stdscr)
