@@ -105,11 +105,94 @@ def oldDB(stdscr):
 			else:
 				oldDB(stdscr, DB)
 
-def oldPswd(stdscr):
-	pass
+def oldPswd(stdscr, DB):
+	curses.echo()
+	stdscr.keypad(False)
+	
+	stdscr.clear()
+	stdscr.addstr(0, 0, "Enter site name:")
+	stdscr.move(1, 0)
+	stdscr.refresh()
+	site = stdscr.getstr(1,0).decode()
+	
+	curses.noecho()
+	while True:
+		stdscr.clear()
+		stdscr.addstr(0, 0, "Enter master password:")
+		stdscr.move(1, 0)
+		stdscr.refresh()
+		mpswd = stdscr.getstr(1,0).decode()
+		
+		try:
+			login, pswd = pswdDB.getpswd(DB, site, mpswd)
+			break
+		except PasswordError:
+			stdscr.clear()
+			stdscr.addstr(0, 0, "Didn't match\tHit any key")
+			stdscr.getch()
+	
+	stdscr.clear()
+	stdscr.addstr(0, 0, "Login: " + login)
+	stdscr.addstr(1, 0, "Password: " + pswd)
+	stdscr.addstr(2, 0, "Hit any key")
+	stdscr.getch()
+	
+	curses.echo()
+	stdscr.keypad(True)
 
-
-def newPswd(stdscr):
-	pass
+def newPswd(stdscr, DB):
+	curses.echo()
+	stdscr.keypad(False)
+	
+	stdscr.clear()
+	stdscr.addstr(0, 0, "Enter site name:")
+	stdscr.move(1, 0)
+	stdscr.refresh()
+	site = stdscr.getstr(1,0).decode()
+	
+	stdscr.clear()
+	stdscr.addstr(0, 0, "Enter login:")
+	stdscr.move(1, 0)
+	stdscr.refresh()
+	login = stdscr.getstr(1,0).decode()
+	
+	curses.noecho()
+	while True: #get mpswd and reassure
+		stdscr.clear() #get mpswd
+		stdscr.addstr(0, 0, "Enter password")
+		stdscr.move(1, 0)
+		stdscr.refresh
+		pswd = stdscr.getstr(1,0).decode()
+		
+		stdscr.clear() #get mpswd again
+		stdscr.addstr(0, 0, "Repeat password")
+		stdscr.move(1, 0)
+		stdscr.refresh
+		rpswd = stdscr.getstr(1,0).decode()
+		
+		if pswd == rpswd: #create and save DB
+			break
+		else:
+			stdscr.clear()
+			stdscr.addstr(0, 0, "Didn't match\tHit any key")
+			stdscr.refresh()
+			stdscr.getch()
+	
+	while True:
+		stdscr.clear()
+		stdscr.addstr(0, 0, "Enter master password:")
+		stdscr.move(1, 0)
+		stdscr.refresh()
+		mpswd = stdscr.getstr(1,0).decode()
+		
+		try:
+			pswdDB.addpswd(DB, site, login, pswd, mpswd)
+			break
+		except PasswordError:
+			stdscr.clear()
+			stdscr.addstr(0, 0, "Didn't match\tHit any key")
+			stdscr.getch()
+	curses.echo()
+	stdscr.keypad(True)
 
 start(stdscr)
