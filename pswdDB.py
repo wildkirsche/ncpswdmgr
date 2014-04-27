@@ -1,6 +1,12 @@
 import crypto
 import pickle
 
+class PasswordError(Exception):
+	def __init__(self, value):
+		self.value = value
+	def __str__(self):
+		return repr(self.value)
+
 class pswdDB():
 	def __init__(self, mpswd):
 		self.mpswd = crypto.hash(mpswd)
@@ -21,15 +27,15 @@ def saveDB(path, DB):
 	pickle.dump((DB.DB, DB.mpswd), open(path, "wb"))
 
 def addpswd(DB, site, login, pswd, mpswd):
-	if crypto.hash(mpswd) = DB.mpswd:
+	if crypto.hash(mpswd) == DB.mpswd:
 		DB.DB[site] = (login, crypto.encrypt(pswd, mpswd))
-		return "WIN"
 	else:
-		return "FAIL"
+		raise PasswordError("Password didn't math!")
 
 def getpswd(DB, site, mpswd):
-	if crypto.hash(mpswd) = DB.mpswd:
+	if crypto.hash(mpswd) == DB.mpswd:
 		login , pswd = DB.DB[site]
 		return (login, crypto.decrypt(pswd, mpswd))
 	else:
-		return "FAIL"
+		raise PasswordError("Password didn't math!")
+		return 0
